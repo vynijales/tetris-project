@@ -13,7 +13,5 @@ Install the LSFM Lib. In Debian and Ubuntu Releases use `sudo apt-get install li
 To compile the project, run:
 
 ```
-g++ -c main.cpp
-
-g++ main.o -o tetris -lsfml-graphics -lsfml-window -lsfml-system
+make
 ```
