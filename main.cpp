@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
+#include <iomanip>
 
 const int HEIGHT = 20;
 const int WIDTH = 10;
@@ -31,6 +32,27 @@ bool check()
 };
 
 
+void displayHighScore(sf::RenderWindow& window)
+{
+    // Load font
+    int score = 0;
+    sf::Font font;
+    font.loadFromFile("assets/Tetris.ttf");
+
+    // Create text object
+    sf::Text text(std::to_string(score), font, 20);
+    text.setFillColor(sf::Color::Black);
+    text.setPosition(256, 50);
+
+    // Format score with leading zeros
+    std::ostringstream ss;
+    ss << std::setw(3) << std::setfill('0') << score;
+    text.setString(ss.str());
+
+    // Draw text to window
+    window.draw(text);
+}
+
 void displayScore(sf::RenderWindow& window, int score)
 {
     // Load font
@@ -38,9 +60,14 @@ void displayScore(sf::RenderWindow& window, int score)
     font.loadFromFile("assets/Tetris.ttf");
 
     // Create text object
-    sf::Text text("Score: " + std::to_string(score), font, 28);
+    sf::Text text(std::to_string(score), font, 20);
     text.setFillColor(sf::Color::Black);
-    text.setPosition(10, 420);
+    text.setPosition(256, 115);
+
+    // Format score with leading zeros
+    std::ostringstream ss;
+    ss << std::setw(3) << std::setfill('0') << score;
+    text.setString(ss.str());
 
     // Draw text to window
     window.draw(text);
@@ -53,11 +80,11 @@ int main()
     sf::RenderWindow window(sf::VideoMode(320, 480), "The Game!");
 
     sf::Texture t1,t2,t3;
-    t1.loadFromFile("assets/tiles.png");
-    t2.loadFromFile("assets/background.png");
-    t3.loadFromFile("assets/frame.png");
+    t1.loadFromFile("assets/tiles1.png");
+    t2.loadFromFile("assets/background1.png");
+    // t3.loadFromFile("assets/frame.png");
 
-    sf::Sprite s(t1), background(t2), frame(t3);
+    sf::Sprite s(t1), background(t2);
 
     int dx=0; bool rotate=0; int colorNum=1;
     float timer=0,delay=0.3; 
@@ -115,7 +142,7 @@ int main()
          int n=rand()%7;
          for (int i=0;i<4;i++)
            {
-            current[i].x = figures[n][i] % 2;
+            current[i].x = figures[n][i] % 2; // Must to be changed
             current[i].y = figures[n][i] / 2;
            }
         }
@@ -138,7 +165,7 @@ int main()
     }
 
     dx=0; rotate=0; 
-    delay = 0.3 - (Score / 20.0); // Difficulty based on current score
+    delay = 0.3 - (Score / 100.0); // Difficulty based on current score
     if (delay < 0.1) {
       delay = 0.1; // Set a minimum delay of 0.1 seconds
     }
@@ -165,7 +192,8 @@ int main()
         window.draw(s);
       }
 
-    window.draw(frame);
+    // window.draw(frame);
+    displayHighScore(window);
     displayScore(window, Score);
     window.display();
     }
