@@ -137,7 +137,11 @@ int main()
         else {Score++;}
     }
 
-    dx=0; rotate=0; delay=0.3;
+    dx=0; rotate=0; 
+    delay = 0.3 - (Score / 20.0); // Difficulty based on current score
+    if (delay < 0.1) {
+      delay = 0.1; // Set a minimum delay of 0.1 seconds
+    }
 
     /////////draw//////////
     window.clear(sf::Color::White);    
