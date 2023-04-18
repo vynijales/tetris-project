@@ -3,6 +3,7 @@
 
 const int HEIGHT = 20;
 const int WIDTH = 10;
+int Score = 0;
 
 int field[HEIGHT][WIDTH] = {0};
 
@@ -29,6 +30,21 @@ bool check()
    return 1;
 };
 
+
+void displayScore(sf::RenderWindow& window, int score)
+{
+    // Load font
+    sf::Font font;
+    font.loadFromFile("assets/Tetris.ttf");
+
+    // Create text object
+    sf::Text text("Score: " + std::to_string(score), font, 28);
+    text.setFillColor(sf::Color::Black);
+    text.setPosition(10, 420);
+
+    // Draw text to window
+    window.draw(text);
+}
 
 int main()
 {
@@ -61,7 +77,7 @@ int main()
                 window.close();
 
             if (e.type == sf::Event::KeyPressed)
-              if (e.key.code==sf::Keyboard::Up) rotate=true;
+              if (e.key.code==sf::Keyboard::Up || e.key.code==sf::Keyboard::Space) rotate=true;
               else if (e.key.code==sf::Keyboard::Left) dx=-1;
               else if (e.key.code==sf::Keyboard::Right) dx=1;
         }
@@ -118,6 +134,7 @@ int main()
             field[k][j]=field[i][j];
         }
         if (count<WIDTH) k--;
+        else {Score++;}
     }
 
     dx=0; rotate=0; delay=0.3;
@@ -145,6 +162,7 @@ int main()
       }
 
     window.draw(frame);
+    displayScore(window, Score);
     window.display();
     }
 
